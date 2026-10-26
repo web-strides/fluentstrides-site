@@ -12,6 +12,15 @@
   <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preload" href="/fonts/baloo2-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="/vendor/motion.js" defer></script>
+  <script>
+    // Same as the home page: hide what Motion brings in only when motion is welcome,
+    // and show everything if Motion never runs.
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('intro');
+      setTimeout(() => { if (!window.__introPlayed) document.documentElement.classList.remove('intro'); }, 3000);
+    }
+  </script>
   <style>
     @font-face {
       font-family: 'Baloo 2';
@@ -35,6 +44,7 @@
       --primary-hover: #2F5EBA;
       --on-primary: #FFFFFF;
       --ink: #235BC9;
+      --soft: #D9E5FF;
       --heading: 'Baloo 2', system-ui, sans-serif;
       color-scheme: light dark;
     }
@@ -47,6 +57,7 @@
         --primary-hover: #8DACEB;
         --on-primary: #0F1117;
         --ink: #82ABFF;
+        --soft: rgba(81, 137, 250, 0.2);
       }
     }
     * { box-sizing: border-box; }
@@ -57,7 +68,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 16px;
       padding: 24px;
       background: var(--bg);
       color: var(--text);
@@ -66,9 +77,19 @@
       text-align: center;
       -webkit-font-smoothing: antialiased;
     }
-    img { height: clamp(100px, 20svh, 160px); width: auto; }
+    img { height: clamp(150px, 32svh, 280px); width: auto; margin-bottom: 8px; }
+    .code {
+      padding: 4px 14px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--ink);
+      font-family: var(--heading);
+      font-size: 15px;
+      font-weight: 700;
+    }
     h1 { margin: 0; font-family: var(--heading); font-size: clamp(30px, 4.4vw, 48px); font-weight: 800; line-height: 1.1; }
     p { margin: 0; color: var(--muted); }
+    .message { max-width: 30em; text-wrap: balance; }
     a {
       display: inline-block;
       padding: 12px 26px;
@@ -81,13 +102,30 @@
       text-decoration: none;
     }
     a:hover { background: var(--primary-hover); }
+    a { margin-top: 8px; }
     a:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+    .intro img, .intro .code, .intro h1, .intro .message, .intro a { opacity: 0; }
   </style>
 </head>
 <body>
-  <img src="/flo.svg" alt="" width="476" height="621">
-  <h1>This page doesn't exist.</h1>
-  <p>Flo looked everywhere.</p>
+  <!-- The app's own 404 picture and words (NotFoundScreen, errors.json). -->
+  <img src="/lost.webp" alt="Flo puzzling over an upside-down map" width="320" height="439">
+  <p class="code">404</p>
+  <h1>This page wandered off</h1>
+  <p class="message">We couldn&rsquo;t find what you were looking for. The link may be old, or the address mistyped.</p>
   <a href="/">Back to FluentStrides</a>
+
+  <script type="module">
+    const { animate } = window.Motion ?? {};
+    if (animate && document.documentElement.classList.contains('intro')) {
+      window.__introPlayed = true;
+      // Flo drops in and turns the map about, puzzled; then the words follow.
+      animate('img', { opacity: [0, 1], y: [-30, 0], rotate: [0, -5, 4, 0] },
+        { opacity: { duration: 0.3 }, y: { type: 'spring', stiffness: 220, damping: 14 }, rotate: { duration: 1.1, delay: 0.3, ease: 'easeInOut' } });
+      animate('.code', { opacity: [0, 1], scale: [0.9, 1] }, { type: 'spring', stiffness: 260, damping: 18, delay: 0.25 });
+      animate('h1, .message, a', { opacity: [0, 1], y: [12, 0] },
+        { duration: 0.55, delay: (i) => 0.35 + i * 0.08, ease: [0.2, 0, 0, 1] });
+    }
+  </script>
 </body>
 </html>
