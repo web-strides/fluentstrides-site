@@ -48,8 +48,6 @@
       --text: #171B22;
       --muted: #656C7B;
       --primary: #376FDD;
-      --primary-hover: #2F5EBA;
-      --on-primary: #FFFFFF;
       --ink: #235BC9;
       --soft: #D9E5FF;
       --border: #E2E6EE;
@@ -62,8 +60,6 @@
         --text: #F8FAFC;
         --muted: #A4ABBA;
         --primary: #628CDF;
-        --primary-hover: #8DACEB;
-        --on-primary: #0F1117;
         --ink: #82ABFF;
         --soft: rgba(81, 137, 250, 0.2);
         --border: #2A2F3A;
@@ -130,27 +126,11 @@
     h1 span { display: block; color: var(--primary); }
     .lead {
       max-width: 34em;
-      margin: 16px 0 28px;
+      margin: 16px 0 0;
       color: var(--muted);
       font-size: clamp(16px, 1.6vw, 19px);
       text-wrap: balance;
     }
-    .button {
-      display: inline-block;
-      padding: 14px 30px;
-      border-radius: 999px;
-      background: var(--primary);
-      color: var(--on-primary);
-      font-family: var(--heading);
-      font-size: 18px;
-      font-weight: 800;
-      line-height: 1.2;
-      text-decoration: none;
-      box-shadow: 0 1px 2px rgba(15, 17, 23, 0.12);
-      transition: background-color 150ms, transform 100ms;
-    }
-    .button:hover { background: var(--primary-hover); }
-    .button:active { transform: translateY(2px); }
 
     footer {
       padding: 24px;
@@ -162,11 +142,10 @@
     /* Flo hops in, then the words follow. */
     @media (prefers-reduced-motion: no-preference) {
       .flo { animation: hop 700ms cubic-bezier(0.2, 0.9, 0.3, 1.25) both; }
-      .soon, h1, .lead, .button { animation: rise 600ms cubic-bezier(0.2, 0, 0, 1) both; }
+      .soon, h1, .lead { animation: rise 600ms cubic-bezier(0.2, 0, 0, 1) both; }
       .soon { animation-delay: 150ms; }
       h1 { animation-delay: 220ms; }
       .lead { animation-delay: 290ms; }
-      .button { animation-delay: 360ms; }
       @keyframes hop { from { opacity: 0; transform: translateY(24px) scale(0.92); } }
       @keyframes rise { from { opacity: 0; transform: translateY(12px); } }
     }
@@ -176,7 +155,7 @@
       .flo { height: clamp(80px, 18svh, 140px); margin-bottom: 12px; }
       header { padding: 16px 24px; }
       footer { padding: 16px 24px; }
-      .lead { margin: 12px 0 20px; }
+      .lead { margin-top: 12px; }
     }
     @media (max-height: 480px) {
       .flo, .soon { display: none; }
@@ -194,7 +173,6 @@
     <p class="soon">Coming soon</p>
     <h1>Stop playing language games. <span>Start understanding.</span></h1>
     <p class="lead">Watch real videos at exactly your level and pick up a language by understanding people talk.</p>
-    <a class="button" href="mailto:hello@webstrides.com?subject=FluentStrides%20launch">Tell me when it launches</a>
   </main>
 
   <footer>A <a href="https://webstrides.com">WebStrides</a> product &middot; &copy; 2026 WebStrides LLC</footer>
