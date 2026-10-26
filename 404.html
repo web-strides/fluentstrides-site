@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page not found · FluentStrides</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#F8FAFC" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0F1117" media="(prefers-color-scheme: dark)">
+  <!-- Absolute paths: GitHub Pages serves this file at whatever URL was missing. -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preload" href="/fonts/baloo2-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+    @font-face {
+      font-family: 'Baloo 2';
+      font-style: normal;
+      font-weight: 700 800;
+      font-display: swap;
+      src: url(/fonts/baloo2-latin.woff2) format('woff2');
+    }
+    @font-face {
+      font-family: 'Nunito Sans';
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url(/fonts/nunito-sans-latin.woff2) format('woff2');
+    }
+    :root {
+      --bg: #F8FAFC;
+      --text: #171B22;
+      --muted: #656C7B;
+      --primary: #376FDD;
+      --primary-hover: #2F5EBA;
+      --on-primary: #FFFFFF;
+      --ink: #235BC9;
+      --heading: 'Baloo 2', system-ui, sans-serif;
+      color-scheme: light dark;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0F1117;
+        --text: #F8FAFC;
+        --muted: #A4ABBA;
+        --primary: #628CDF;
+        --primary-hover: #8DACEB;
+        --on-primary: #0F1117;
+        --ink: #82ABFF;
+      }
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 24px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Nunito Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      font-size: 17px;
+      text-align: center;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { height: clamp(100px, 20svh, 160px); width: auto; }
+    h1 { margin: 0; font-family: var(--heading); font-size: clamp(30px, 4.4vw, 48px); font-weight: 800; line-height: 1.1; }
+    p { margin: 0; color: var(--muted); }
+    a {
+      display: inline-block;
+      padding: 12px 26px;
+      border-radius: 999px;
+      background: var(--primary);
+      color: var(--on-primary);
+      font-family: var(--heading);
+      font-size: 17px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    a:hover { background: var(--primary-hover); }
+    a:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+  </style>
+</head>
+<body>
+  <img src="/flo.svg" alt="" width="476" height="621">
+  <h1>This page doesn't exist.</h1>
+  <p>Flo looked everywhere.</p>
+  <a href="/">Back to FluentStrides</a>
+</body>
+</html>

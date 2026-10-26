@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FluentStrides: learn a language by watching real videos</title>
+  <meta name="description" content="Stop playing language games. Watch real videos at exactly your level and pick up a language by understanding people talk. Coming soon.">
+  <meta name="theme-color" content="#F8FAFC" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0F1117" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://fluentstrides.com/">
+  <!-- Link previews (iMessage, Slack, LinkedIn, email) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://fluentstrides.com/">
+  <meta property="og:site_name" content="FluentStrides">
+  <meta property="og:title" content="FluentStrides: coming soon">
+  <meta property="og:description" content="Stop playing language games. Start understanding.">
+  <meta property="og:image" content="https://fluentstrides.com/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Flo the duck beside the FluentStrides wordmark.">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- Fonts are served from this site, so visits make no third-party requests. -->
+  <link rel="preload" href="fonts/baloo2-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/nunito-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+    /* Baloo 2 and Nunito Sans (SIL OFL 1.1, fonts/OFL-*.txt), Latin subset, copied from the app. */
+    @font-face {
+      font-family: 'Baloo 2';
+      font-style: normal;
+      font-weight: 700 800;
+      font-display: swap;
+      src: url(fonts/baloo2-latin.woff2) format('woff2');
+    }
+    @font-face {
+      font-family: 'Nunito Sans';
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url(fonts/nunito-sans-latin.woff2) format('woff2');
+    }
+
+    /* Values copied from the app's built theme (packages/tokens/dist/theme.css). */
+    :root {
+      --bg: #F8FAFC;
+      --text: #171B22;
+      --muted: #656C7B;
+      --primary: #376FDD;
+      --primary-hover: #2F5EBA;
+      --on-primary: #FFFFFF;
+      --ink: #235BC9;
+      --soft: #D9E5FF;
+      --border: #E2E6EE;
+      --heading: 'Baloo 2', system-ui, sans-serif;
+      color-scheme: light dark;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0F1117;
+        --text: #F8FAFC;
+        --muted: #A4ABBA;
+        --primary: #628CDF;
+        --primary-hover: #8DACEB;
+        --on-primary: #0F1117;
+        --ink: #82ABFF;
+        --soft: rgba(81, 137, 250, 0.2);
+        --border: #2A2F3A;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Nunito Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      font-size: 17px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--ink); }
+    a:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 4px; }
+
+    .wordmark {
+      font-family: var(--heading);
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .wordmark b { font-weight: 800; }
+
+    header { padding: 24px; display: flex; justify-content: center; }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+      text-align: center;
+    }
+    .flo { width: auto; height: clamp(120px, 24svh, 220px); margin-bottom: 20px; }
+    .soon {
+      margin: 0 0 14px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--ink);
+      font-family: var(--heading);
+      font-size: 15px;
+      font-weight: 700;
+    }
+    h1 {
+      margin: 0;
+      font-family: var(--heading);
+      font-size: clamp(34px, 5.4vw, 60px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      text-wrap: balance;
+    }
+    h1 span { display: block; color: var(--primary); }
+    .lead {
+      max-width: 34em;
+      margin: 16px 0 28px;
+      color: var(--muted);
+      font-size: clamp(16px, 1.6vw, 19px);
+      text-wrap: balance;
+    }
+    .button {
+      display: inline-block;
+      padding: 14px 30px;
+      border-radius: 999px;
+      background: var(--primary);
+      color: var(--on-primary);
+      font-family: var(--heading);
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.2;
+      text-decoration: none;
+      box-shadow: 0 1px 2px rgba(15, 17, 23, 0.12);
+      transition: background-color 150ms, transform 100ms;
+    }
+    .button:hover { background: var(--primary-hover); }
+    .button:active { transform: translateY(2px); }
+
+    footer {
+      padding: 24px;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    /* Flo hops in, then the words follow. */
+    @media (prefers-reduced-motion: no-preference) {
+      .flo { animation: hop 700ms cubic-bezier(0.2, 0.9, 0.3, 1.25) both; }
+      .soon, h1, .lead, .button { animation: rise 600ms cubic-bezier(0.2, 0, 0, 1) both; }
+      .soon { animation-delay: 150ms; }
+      h1 { animation-delay: 220ms; }
+      .lead { animation-delay: 290ms; }
+      .button { animation-delay: 360ms; }
+      @keyframes hop { from { opacity: 0; transform: translateY(24px) scale(0.92); } }
+      @keyframes rise { from { opacity: 0; transform: translateY(12px); } }
+    }
+
+    /* Short screens (small phones, landscape): shrink Flo so it all still fits one screen. */
+    @media (max-height: 700px) {
+      .flo { height: clamp(80px, 18svh, 140px); margin-bottom: 12px; }
+      header { padding: 16px 24px; }
+      footer { padding: 16px 24px; }
+      .lead { margin: 12px 0 20px; }
+    }
+    @media (max-height: 480px) {
+      .flo, .soon { display: none; }
+      h1 { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="wordmark" href="/" aria-label="FluentStrides home"><b>Fluent</b>Strides</a>
+  </header>
+
+  <main>
+    <img class="flo" src="flo.svg" alt="Flo, the FluentStrides duck" width="476" height="621">
+    <p class="soon">Coming soon</p>
+    <h1>Stop playing language games. <span>Start understanding.</span></h1>
+    <p class="lead">Watch real videos at exactly your level and pick up a language by understanding people talk.</p>
+    <a class="button" href="mailto:hello@webstrides.com?subject=FluentStrides%20launch">Tell me when it launches</a>
+  </main>
+
+  <footer>A <a href="https://webstrides.com">WebStrides</a> product &middot; &copy; 2026 WebStrides LLC</footer>
+</body>
+</html>
