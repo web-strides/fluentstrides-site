@@ -25,6 +25,15 @@
   <!-- Fonts are served from this site, so visits make no third-party requests. -->
   <link rel="preload" href="fonts/baloo2-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/nunito-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="vendor/motion.js" defer></script>
+  <script>
+    // Hide what Motion brings in only when JS runs and motion is welcome, so the
+    // page is complete without either. If Motion never runs, show everything.
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('intro');
+      setTimeout(() => { if (!window.__introPlayed) document.documentElement.classList.remove('intro'); }, 3000);
+    }
+  </script>
   <style>
     /* Baloo 2 and Nunito Sans (SIL OFL 1.1, fonts/OFL-*.txt), Latin subset, copied from the app. */
     @font-face {
@@ -123,13 +132,36 @@
       letter-spacing: -0.01em;
       text-wrap: balance;
     }
-    h1 span { display: block; color: var(--primary); }
+    h1 .line { display: block; }
+    h1 .line + .line { color: var(--primary); }
+    h1 .w { display: inline-block; }
     .lead {
       max-width: 34em;
       margin: 16px 0 0;
       color: var(--muted);
       font-size: clamp(16px, 1.6vw, 19px);
       text-wrap: balance;
+    }
+
+    /* The cheering crowd: one layer behind the page, each duck placed by its own
+       --x/--y/--h (desktop) and --mx/--my/--mh (phones), tilted by --r, mirrored by .flip. */
+    header, main, footer { position: relative; z-index: 1; }
+    .crowd { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .duck {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      height: var(--h);
+      width: auto;
+      rotate: var(--r, 0deg);
+      translate: calc(var(--px, 0) * var(--z, 1) * 1px) calc(var(--py, 0) * var(--z, 1) * 1px);
+    }
+    .duck.flip { scale: -1 1; }
+    /* Short laptop screens: the two front-centre ducks duck down out of the text's way. */
+    @media (min-width: 701px) and (max-height: 800px) { .duck.low { top: 85%; height: 9vh; } }
+    @media (max-width: 700px) {
+      .duck { left: var(--mx); top: var(--my); height: var(--mh); }
+      .duck:not([style*="--mx"]) { display: none; }
     }
 
     footer {
@@ -139,16 +171,9 @@
       text-align: center;
     }
 
-    /* Flo hops in, then the words follow. */
-    @media (prefers-reduced-motion: no-preference) {
-      .flo { animation: hop 700ms cubic-bezier(0.2, 0.9, 0.3, 1.25) both; }
-      .soon, h1, .lead { animation: rise 600ms cubic-bezier(0.2, 0, 0, 1) both; }
-      .soon { animation-delay: 150ms; }
-      h1 { animation-delay: 220ms; }
-      .lead { animation-delay: 290ms; }
-      @keyframes hop { from { opacity: 0; transform: translateY(24px) scale(0.92); } }
-      @keyframes rise { from { opacity: 0; transform: translateY(12px); } }
-    }
+    /* Starting state for the intro (the head script sets .intro; Motion takes over from here). */
+    .intro .flo, .intro .soon, .intro h1 .w, .intro .lead, .intro .duck, .intro header, .intro footer { opacity: 0; }
+    .flo.tappable { cursor: pointer; -webkit-tap-highlight-color: transparent; }
 
     /* Short screens (small phones, landscape): shrink Flo so it all still fits one screen. */
     @media (max-height: 700px) {
@@ -158,12 +183,31 @@
       .lead { margin-top: 12px; }
     }
     @media (max-height: 480px) {
-      .flo, .soon { display: none; }
+      .flo, .soon, .crowd { display: none; }
       h1 { font-size: 30px; }
     }
   </style>
 </head>
 <body>
+  <div class="crowd" aria-hidden="true">
+    <img class="duck" src="crowd/flo-1.webp" alt="" style="--x:3%;--y:9%;--h:13vh;--r:-8deg;--b:1.3s;--mx:4%;--my:8%;--mh:8svh">
+    <img class="duck flip" src="crowd/flo-5.webp" alt="" style="--x:13%;--y:27%;--h:11vh;--r:5deg;--b:1.6s">
+    <img class="duck" src="crowd/flo-3.webp" alt="" style="--x:2%;--y:41%;--h:17vh;--r:-4deg;--b:1.2s">
+    <img class="duck flip" src="crowd/flo-2.webp" alt="" style="--x:8%;--y:57%;--h:13vh;--r:6deg;--b:1.5s">
+    <img class="duck" src="crowd/flo-4.webp" alt="" style="--x:1%;--y:72%;--h:21vh;--r:-3deg;--b:1.35s;--mx:-6%;--my:79%;--mh:12svh">
+    <img class="duck flip" src="crowd/flo-6.webp" alt="" style="--x:17%;--y:80%;--h:15vh;--r:4deg;--b:1.7s;--mx:17%;--my:81%;--mh:10svh">
+
+    <img class="duck flip" src="crowd/flo-1.webp" alt="" style="--x:87%;--y:8%;--h:13vh;--r:8deg;--b:1.45s;--mx:76%;--my:8%;--mh:8svh">
+    <img class="duck" src="crowd/flo-6.webp" alt="" style="--x:79%;--y:26%;--h:11vh;--r:-5deg;--b:1.25s">
+    <img class="duck flip" src="crowd/flo-3.webp" alt="" style="--x:86%;--y:40%;--h:17vh;--r:4deg;--b:1.55s">
+    <img class="duck" src="crowd/flo-2.webp" alt="" style="--x:85%;--y:57%;--h:13vh;--r:-6deg;--b:1.3s">
+    <img class="duck flip" src="crowd/flo-4.webp" alt="" style="--x:85%;--y:71%;--h:21vh;--r:3deg;--b:1.6s;--mx:76%;--my:79%;--mh:12svh">
+    <img class="duck" src="crowd/flo-5.webp" alt="" style="--x:71%;--y:81%;--h:14vh;--r:-4deg;--b:1.4s;--mx:58%;--my:81%;--mh:10svh">
+
+    <img class="duck low" src="crowd/flo-3.webp" alt="" style="--x:31%;--y:81%;--h:11vh;--r:-5deg;--b:1.5s;--mx:38%;--my:82%;--mh:9svh">
+    <img class="duck flip low" src="crowd/flo-1.webp" alt="" style="--x:64%;--y:81%;--h:11vh;--r:5deg;--b:1.25s">
+  </div>
+
   <header>
     <a class="wordmark" href="/" aria-label="FluentStrides home"><b>Fluent</b>Strides</a>
   </header>
@@ -171,10 +215,72 @@
   <main>
     <img class="flo" src="flo.svg" alt="Flo, the FluentStrides duck" width="476" height="621">
     <p class="soon">Coming soon</p>
-    <h1>Stop playing language games. <span>Start understanding.</span></h1>
+    <h1><span class="line"><span class="w">Stop</span> <span class="w">playing</span> <span class="w">language</span> <span class="w">games.</span></span> <span class="line"><span class="w">Start</span> <span class="w">understanding.</span></span></h1>
     <p class="lead">Watch real videos at exactly your level and pick up a language by understanding people talk.</p>
   </main>
 
   <footer>A <a href="https://webstrides.com">WebStrides</a> product &middot; &copy; 2026 WebStrides LLC</footer>
+
+  <script type="module">
+    // vendor/motion.js is Motion 12.43.0's standalone build (MIT, vendor/MOTION-LICENSE.md);
+    // it's deferred, so it has run before this module does.
+    const { animate, stagger } = window.Motion ?? {};
+    const root = document.documentElement;
+
+    if (animate && root.classList.contains('intro')) {
+      window.__introPlayed = true;
+      const flo = document.querySelector('.flo');
+      const words = document.querySelectorAll('h1 .w');
+      const ducks = [...document.querySelectorAll('.duck')].filter((d) => d.offsetWidth);
+      const spring = { type: 'spring', stiffness: 260, damping: 18 };
+
+      // Flo lands first, with a little squash; then the words rise in reading order.
+      animate('header', { opacity: [0, 1] }, { duration: 0.6 });
+      animate(flo, { opacity: [0, 1], y: [40, 0], scale: [0.85, 1] }, { ...spring, delay: 0.1 });
+      animate('.soon', { opacity: [0, 1], y: [10, 0], scale: [0.9, 1] }, { ...spring, delay: 0.35 });
+      animate(words, { opacity: [0, 1], y: ['0.5em', 0], filter: ['blur(6px)', 'blur(0px)'] },
+        { duration: 0.55, delay: stagger(0.06, { startDelay: 0.42 }), ease: [0.2, 0, 0, 1] });
+      animate('.lead', { opacity: [0, 1], y: [12, 0] }, { duration: 0.6, delay: 0.85, ease: [0.2, 0, 0, 1] });
+      animate('footer', { opacity: [0, 1] }, { duration: 0.6, delay: 1.1 });
+
+      // The crowd pops up from the centre outwards, then each duck bobs on its own beat.
+      const cx = innerWidth / 2, cy = innerHeight / 2;
+      const far = Math.hypot(cx, cy);
+      for (const duck of ducks) {
+        const r = duck.getBoundingClientRect();
+        const dist = Math.hypot(r.left + r.width / 2 - cx, r.top + r.height / 2 - cy) / far;
+        // Bigger ducks are nearer, so they move further with the pointer.
+        duck.style.setProperty('--z', (r.height / (innerHeight * 0.14)).toFixed(2));
+        const bob = parseFloat(getComputedStyle(duck).getPropertyValue('--b')) || 1.4;
+        animate(duck, { opacity: [0, 1], y: ['40%', '0%'], scale: [0.6, 1] },
+          { type: 'spring', stiffness: 300, damping: 16, delay: 0.55 + dist * 0.5 })
+          .then(() => animate(duck, { y: ['0%', '-7%'] },
+            { duration: bob, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' }));
+      }
+
+      // The crowd leans gently toward the pointer (mouse and trackpad only).
+      if (matchMedia('(pointer: fine)').matches) {
+        const crowd = document.querySelector('.crowd');
+        addEventListener('pointermove', (e) => {
+          animate(crowd, {
+            '--px': ((e.clientX / innerWidth) - 0.5) * -16,
+            '--py': ((e.clientY / innerHeight) - 0.5) * -10,
+          }, { type: 'spring', stiffness: 60, damping: 18 });
+        }, { passive: true });
+      }
+
+      // Tap Flo: he hops, and the crowd cheers back in a ripple out from him.
+      flo.classList.add('tappable');
+      flo.addEventListener('click', () => {
+        animate(flo, { y: [0, -28, 0], rotate: [0, -6, 6, 0], scale: [1, 1.04, 1] }, { duration: 0.6, ease: 'easeOut' });
+        const f = flo.getBoundingClientRect();
+        for (const duck of ducks) {
+          const r = duck.getBoundingClientRect();
+          const dist = Math.hypot(r.left - f.left, r.top - f.top) / far;
+          animate(duck, { scale: [1, 1.18, 1] }, { duration: 0.45, delay: 0.15 + dist * 0.35, ease: 'easeOut' });
+        }
+      });
+    }
+  </script>
 </body>
 </html>
