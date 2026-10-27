@@ -27,12 +27,10 @@
   <link rel="preload" href="fonts/nunito-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <script src="vendor/motion.js" defer></script>
   <script>
-    // Hide what Motion brings in only when JS runs and motion is welcome, so the
-    // page is complete without either. If Motion never runs, show everything.
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.documentElement.classList.add('intro');
-      setTimeout(() => { if (!window.__introPlayed) document.documentElement.classList.remove('intro'); }, 3000);
-    }
+    // Hide what Motion brings in only when JS runs, so the page is complete without it.
+    // (Reduce Motion gets a fade-only intro.) If Motion never runs, show everything.
+    document.documentElement.classList.add('intro');
+    setTimeout(() => { if (!window.__introPlayed) document.documentElement.classList.remove('intro'); }, 3000);
   </script>
   <style>
     /* Baloo 2 and Nunito Sans (SIL OFL 1.1, fonts/OFL-*.txt), Latin subset, copied from the app. */
@@ -144,7 +142,7 @@
     }
 
     /* The cheering crowd: one layer behind the page, each duck placed by its own
-       --x/--y/--h (desktop) and --mx/--my/--mh (phones), tilted by --r, mirrored by .flip. */
+       --x/--y/--h (desktop) and --mx/--my|--mb/--mw (phones), tilted by --r, mirrored by .flip. */
     header, main, footer { position: relative; z-index: 1; }
     .crowd { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
     .duck {
@@ -162,12 +160,21 @@
     @media (max-width: 700px) {
       /* Leave the footer's two lines clear: the ducks' % positions measure from the crowd's box. */
       .crowd { bottom: 34px; }
-      .duck { left: var(--mx); top: var(--my); height: var(--mh); }
+      /* Sized by width and placed by their centre (--mx), so the mirrored pairs stay
+         symmetric on every phone; margin because Motion owns transform. */
+      .duck {
+        left: var(--mx);
+        top: var(--my, auto);
+        bottom: var(--mb, auto);
+        width: var(--mw);
+        height: auto;
+        margin-left: calc(var(--mw) / -2);
+      }
       .duck:not([style*="--mx"]) { display: none; }
     }
-    /* Short phones: that lift brings the bottom row up to the lead, so the ducks shrink from the head down. */
+    /* Short phones: that lift brings the bottom row up to the lead, so the ducks shrink (bottoms stay put). */
     @media (max-width: 700px) and (max-height: 700px) {
-      .duck { height: calc(var(--mh) * 0.8); margin-top: calc(var(--mh) * 0.2); }
+      .duck { width: calc(var(--mw) * 0.8); margin-left: calc(var(--mw) * -0.4); }
     }
 
     footer {
@@ -198,21 +205,21 @@
 </head>
 <body>
   <div class="crowd" aria-hidden="true">
-    <img class="duck" src="crowd/flo-1-sky.webp" alt="" style="--x:3%;--y:9%;--h:13vh;--r:-8deg;--b:1.3s;--mx:4%;--my:8%;--mh:8svh">
+    <img class="duck" src="crowd/flo-1-sky.webp" alt="" style="--x:3%;--y:9%;--h:13vh;--r:-8deg;--b:1.3s;--mx:10%;--my:8%;--mw:15vw">
     <img class="duck flip" src="crowd/flo-5-dove.webp" alt="" style="--x:13%;--y:27%;--h:11vh;--r:5deg;--b:1.6s">
     <img class="duck" src="crowd/flo-3-pink.webp" alt="" style="--x:2%;--y:41%;--h:17vh;--r:-4deg;--b:1.2s">
     <img class="duck flip" src="crowd/flo-2-mint.webp" alt="" style="--x:8%;--y:57%;--h:13vh;--r:6deg;--b:1.5s">
-    <img class="duck" src="crowd/flo-4-lilac.webp" alt="" style="--x:1%;--y:72%;--h:21vh;--r:-3deg;--b:1.35s;--mx:-6%;--my:79%;--mh:12svh">
-    <img class="duck flip" src="crowd/flo-6-peach.webp" alt="" style="--x:17%;--y:80%;--h:15vh;--r:4deg;--b:1.7s;--mx:17%;--my:81%;--mh:10svh">
+    <img class="duck" src="crowd/flo-4-lilac.webp" alt="" style="--x:1%;--y:72%;--h:21vh;--r:-3deg;--b:1.35s;--mx:8%;--mb:6%;--mw:24vw">
+    <img class="duck flip" src="crowd/flo-6-peach.webp" alt="" style="--x:17%;--y:80%;--h:15vh;--r:4deg;--b:1.7s;--mx:29%;--mb:7.5%;--mw:19vw">
 
-    <img class="duck flip" src="crowd/flo-1-mint.webp" alt="" style="--x:87%;--y:8%;--h:13vh;--r:8deg;--b:1.45s;--mx:76%;--my:8%;--mh:8svh">
+    <img class="duck flip" src="crowd/flo-1-mint.webp" alt="" style="--x:87%;--y:8%;--h:13vh;--r:8deg;--b:1.45s;--mx:90%;--my:8%;--mw:15vw">
     <img class="duck" src="crowd/flo-6-dove.webp" alt="" style="--x:79%;--y:26%;--h:11vh;--r:-5deg;--b:1.25s">
     <img class="duck flip" src="crowd/flo-3-sky.webp" alt="" style="--x:86%;--y:40%;--h:17vh;--r:4deg;--b:1.55s">
     <img class="duck" src="crowd/flo-2-cream.webp" alt="" style="--x:85%;--y:57%;--h:13vh;--r:-6deg;--b:1.3s">
-    <img class="duck flip" src="crowd/flo-4-pink.webp" alt="" style="--x:85%;--y:71%;--h:21vh;--r:3deg;--b:1.6s;--mx:76%;--my:79%;--mh:12svh">
-    <img class="duck" src="crowd/flo-5-sage.webp" alt="" style="--x:71%;--y:81%;--h:14vh;--r:-4deg;--b:1.4s;--mx:58%;--my:81%;--mh:10svh">
+    <img class="duck flip" src="crowd/flo-4-pink.webp" alt="" style="--x:85%;--y:71%;--h:21vh;--r:3deg;--b:1.6s;--mx:92%;--mb:6%;--mw:24vw">
+    <img class="duck" src="crowd/flo-5-sage.webp" alt="" style="--x:71%;--y:81%;--h:14vh;--r:-4deg;--b:1.4s;--mx:71%;--mb:7.5%;--mw:19vw">
 
-    <img class="duck low" src="crowd/flo-3-cream.webp" alt="" style="--x:31%;--y:81%;--h:11vh;--r:-5deg;--b:1.5s;--mx:38%;--my:82%;--mh:9svh">
+    <img class="duck low" src="crowd/flo-3-cream.webp" alt="" style="--x:31%;--y:81%;--h:11vh;--r:-5deg;--b:1.5s;--mx:50%;--mb:8.5%;--mw:17vw">
     <img class="duck flip low" src="crowd/flo-1-lilac.webp" alt="" style="--x:64%;--y:81%;--h:11vh;--r:5deg;--b:1.25s">
   </div>
 
@@ -244,18 +251,28 @@
 
     if (animate && root.classList.contains('intro')) {
       window.__introPlayed = true;
+      // Reduce Motion still gets the intro, as plain fades: nothing moves, scales, blurs or loops.
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
       const flo = document.querySelector('.flo');
       const words = document.querySelectorAll('h1 .w');
       const ducks = [...document.querySelectorAll('.duck')].filter((d) => d.offsetWidth);
       const spring = { type: 'spring', stiffness: 260, damping: 18 };
+      const fade = { duration: 0.6, ease: 'easeOut' };
 
       // Flo lands first, with a little squash; then the words rise in reading order.
       animate('header', { opacity: [0, 1] }, { duration: 0.6 });
-      animate(flo, { opacity: [0, 1], y: [40, 0], scale: [0.85, 1] }, { ...spring, delay: 0.1 });
-      animate('.soon', { opacity: [0, 1], y: [10, 0], scale: [0.9, 1] }, { ...spring, delay: 0.35 });
-      animate(words, { opacity: [0, 1], y: ['0.5em', 0], filter: ['blur(6px)', 'blur(0px)'] },
-        { duration: 0.55, delay: stagger(0.06, { startDelay: 0.42 }), ease: [0.2, 0, 0, 1] });
-      animate('.lead', { opacity: [0, 1], y: [12, 0] }, { duration: 0.6, delay: 0.85, ease: [0.2, 0, 0, 1] });
+      if (reduce) {
+        animate(flo, { opacity: [0, 1] }, { ...fade, delay: 0.1 });
+        animate('.soon', { opacity: [0, 1] }, { ...fade, delay: 0.3 });
+        animate(words, { opacity: [0, 1] }, { ...fade, delay: stagger(0.06, { startDelay: 0.4 }) });
+        animate('.lead', { opacity: [0, 1] }, { ...fade, delay: 0.85 });
+      } else {
+        animate(flo, { opacity: [0, 1], y: [40, 0], scale: [0.85, 1] }, { ...spring, delay: 0.1 });
+        animate('.soon', { opacity: [0, 1], y: [10, 0], scale: [0.9, 1] }, { ...spring, delay: 0.35 });
+        animate(words, { opacity: [0, 1], y: ['0.5em', 0], filter: ['blur(6px)', 'blur(0px)'] },
+          { duration: 0.55, delay: stagger(0.06, { startDelay: 0.42 }), ease: [0.2, 0, 0, 1] });
+        animate('.lead', { opacity: [0, 1], y: [12, 0] }, { duration: 0.6, delay: 0.85, ease: [0.2, 0, 0, 1] });
+      }
       animate('footer', { opacity: [0, 1] }, { duration: 0.6, delay: 1.1 });
 
       // The crowd pops up from the centre outwards, then each duck bobs on its own beat.
@@ -264,6 +281,10 @@
       for (const duck of ducks) {
         const r = duck.getBoundingClientRect();
         const dist = Math.hypot(r.left + r.width / 2 - cx, r.top + r.height / 2 - cy) / far;
+        if (reduce) {
+          animate(duck, { opacity: [0, 1] }, { duration: 0.8, ease: 'easeOut', delay: 0.55 + dist * 0.5 });
+          continue;
+        }
         // Bigger ducks are nearer, so they move further with the pointer.
         duck.style.setProperty('--z', (r.height / (innerHeight * 0.14)).toFixed(2));
         const bob = parseFloat(getComputedStyle(duck).getPropertyValue('--b')) || 1.4;
@@ -274,7 +295,7 @@
       }
 
       // The crowd leans gently toward the pointer (mouse and trackpad only).
-      if (matchMedia('(pointer: fine)').matches) {
+      if (!reduce && matchMedia('(pointer: fine)').matches) {
         const crowd = document.querySelector('.crowd');
         addEventListener('pointermove', (e) => {
           animate(crowd, {
@@ -285,14 +306,16 @@
       }
 
       // Tap Flo: he hops, and the crowd cheers back in a ripple out from him.
+      // With Reduce Motion it's a small pulse instead, since the visitor asked for it.
       flo.classList.add('tappable');
       flo.addEventListener('click', () => {
-        animate(flo, { y: [0, -28, 0], rotate: [0, -6, 6, 0], scale: [1, 1.04, 1] }, { duration: 0.6, ease: 'easeOut' });
+        if (reduce) animate(flo, { scale: [1, 1.05, 1] }, { duration: 0.4, ease: 'easeOut' });
+        else animate(flo, { y: [0, -28, 0], rotate: [0, -6, 6, 0], scale: [1, 1.04, 1] }, { duration: 0.6, ease: 'easeOut' });
         const f = flo.getBoundingClientRect();
         for (const duck of ducks) {
           const r = duck.getBoundingClientRect();
           const dist = Math.hypot(r.left - f.left, r.top - f.top) / far;
-          animate(duck, { scale: [1, 1.18, 1] }, { duration: 0.45, delay: 0.15 + dist * 0.35, ease: 'easeOut' });
+          animate(duck, { scale: [1, reduce ? 1.06 : 1.18, 1] }, { duration: 0.45, delay: 0.15 + dist * 0.35, ease: 'easeOut' });
         }
       });
     }
